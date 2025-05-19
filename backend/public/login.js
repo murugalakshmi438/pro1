@@ -6,13 +6,13 @@ loginBtn.addEventListener("click", async () => {
   const password = document.getElementById("loginPassword").value.trim();
 
   if (!email || !password) {
-    loginMessage.textContent = "Please enter email and password";
+    loginMessage.textContent = "Please enter both email and password";
     loginMessage.style.color = "red";
     return;
   }
 
   try {
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("https://bookstore-backend.onrender.com/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -21,16 +21,18 @@ loginBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     if (res.ok) {
-      // Save token or user info in localStorage/sessionStorage if using JWT
-      localStorage.setItem("token", data.token);
-      // Redirect to books page after login success
-      window.location.href = "/books.html";
+      loginMessage.style.color = "green";
+      loginMessage.textContent = "Login successful! Redirecting...";
+      setTimeout(() => {
+        window.location.href = "books.html"; // local file (you may need to host this)
+      }, 1000);
     } else {
-      loginMessage.textContent = data.message || "Login failed";
       loginMessage.style.color = "red";
+      loginMessage.textContent = data.message || "Login failed";
     }
   } catch (err) {
-    loginMessage.textContent = "Server error. Try again later.";
     loginMessage.style.color = "red";
+    loginMessage.textContent = "An error occurred";
+    console.error(err);
   }
 });

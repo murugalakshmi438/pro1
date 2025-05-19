@@ -13,7 +13,7 @@ signupBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch("/api/auth/signup", {
+    const res = await fetch("https://bookstore-backend.onrender.com/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -23,20 +23,14 @@ signupBtn.addEventListener("click", async () => {
 
     if (res.ok) {
       signupMessage.style.color = "green";
-      signupMessage.textContent = data.message || signupMessage.style.color == "green";
-      signupMessage.textContent = data.message || "Signup successful! You can now log in.";
-      // Optionally, clear the form fields
-      document.getElementById("signupUsername").value = "";
-      document.getElementById("signupEmail").value = "";
-      document.getElementById("signupPassword").value = "";
+      signupMessage.textContent = data.message || "Signup successful!";
     } else {
       signupMessage.style.color = "red";
-      signupMessage.textContent = data.message || "Signup failed. Please try again.";
+      signupMessage.textContent = data.message || "Signup failed";
     }
-  } catch (error) {
+  } catch (err) {
     signupMessage.style.color = "red";
-    signupMessage.textContent = "An error occurred. Please try again later.";
-    console.error("Signup error:", error);
+    signupMessage.textContent = "An error occurred";
+    console.error(err);
   }
 });
-
